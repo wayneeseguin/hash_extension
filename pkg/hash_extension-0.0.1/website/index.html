@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>
+      hash_extension
+  </title>
+  <script src="javascripts/rounded_corners_lite.inc.js" type="text/javascript"></script>
+<style>
+
+</style>
+  <script type="text/javascript">
+    window.onload = function() {
+      settings = {
+          tl: { radius: 10 },
+          tr: { radius: 10 },
+          bl: { radius: 10 },
+          br: { radius: 10 },
+          antiAlias: true,
+          autoPad: true,
+          validTags: ["div"]
+      }
+      var versionBox = new curvyCorners(settings, document.getElementById("version"));
+      versionBox.applyCornersToAll();
+    }
+  </script>
+</head>
+<body>
+<div id="main">
+
+    <h1>hash_extension</h1>
+    <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/hash_extension"; return false'>
+      <p>Get Version</p>
+      <a href="http://rubyforge.org/projects/hash_extension" class="numbers">0.0.1</a>
+    </div>
+    <h2>What</h2>
+
+
+	<p>hash_extension is a Ruby on Rails plug-in that makes hashes more object-like.  When you request a lot of objects with an ActiveRecord query, there&#8217;s a lot of overhead in creating those objects that come back.  If you&#8217;re not modifying, just displaying them or performing local calculations before display, you don&#8217;t need to suffer that overhead.  It turns out it&#8217;s much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.</p>
+
+
+	<h2>Installing</h2>
+
+
+	<p><pre class='syntax'><span class="ident">sudo</span> <span class="ident">gem</span> <span class="ident">install</span> <span class="ident">hash_extension</span></pre></p>
+
+
+	<h2>The basics</h2>
+
+
+	<p>The hash_extension plug-in allows you to treat hashes like objects.  E.g,. instead of:</p>
+
+
+	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">['</span><span class="string">foo</span><span class="punct">']</span></pre></p>
+
+
+	<p>you can say:</p>
+
+
+	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">.</span><span class="ident">foo</span></pre></p>
+
+
+	<p>Instead of:</p>
+
+
+	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">['</span><span class="string">foo</span><span class="punct">']</span> <span class="punct">=</span> <span class="punct">'</span><span class="string">bar</span><span class="punct">'</span></pre></p>
+
+
+	<p>you can say:</p>
+
+
+	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">['</span><span class="string">foo</span><span class="punct">']</span> <span class="punct">=</span> <span class="punct">'</span><span class="string">bar</span><span class="punct">'</span></pre></p>
+
+
+	<p>The trunk repository is <code>svn://rubyforge.org/var/svn/hash_extension/trunk</code> for anonymous access.</p>
+
+
+	<h2>From Rails</h2>
+
+
+	<p>First, add the following to the bottom of your environment.rb file:</p>
+
+
+	<p><pre class='syntax'><span class="ident">require</span> <span class="punct">'</span><span class="string">hash_extension</span><span class="punct">'</span></pre></p>
+
+
+	<p>Anywhere you have syntax like this:</p>
+
+
+	<p><pre class='syntax'><span class="constant">MyObject</span><span class="punct">.</span><span class="ident">find</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">)</span></pre></p>
+
+
+	<p>You can replace it with this:</p>
+
+
+	<p><pre class='syntax'><span class="constant">MyObject</span><span class="punct">.</span><span class="ident">connection</span><span class="punct">.</span><span class="ident">select_all</span><span class="punct">(&quot;</span><span class="string">select * from my_objects</span><span class="punct">&quot;)</span></pre></p>
+
+
+	<p>The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correct with the hashes returned by connection.select.  If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., &#8220;find_as_hashes(:all)&#8221;, I&#8217;d be thrilled to include it as part of this plug-in.</p>
+
+
+	<h2>License</h2>
+
+
+	<p>This code is free to use under the terms of the <span class="caps">MIT</span> license.</p>
+
+
+	<h2>Contact</h2>
+
+
+	<p>Comments are welcome. Send an email to <a href="mailto:dan@chak.org">Dan Chak</a>.</p>
+    <p class="coda">
+      <a href="FIXME email">FIXME full name</a>, 22nd January 2008<br>
+      Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
+    </p>
+</div>
+
+<!-- insert site tracking codes here, like Google Urchin -->
+
+</body>
+</html>

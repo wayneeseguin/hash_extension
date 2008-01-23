@@ -1,0 +1,53 @@
+h1. hash_extension
+
+h2. What
+
+hash_extension is a Ruby on Rails plug-in that makes hashes more object-like.  When you request a lot of objects with an ActiveRecord query, there's a lot of overhead in creating those objects that come back.  If you're not modifying, just displaying them or performing local calculations before display, you don't need to suffer that overhead.  It turns out it's much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.
+
+h2. Installing
+
+<pre syntax="ruby">sudo gem install hash_extension</pre>
+
+h2. The basics
+
+The hash_extension plug-in allows you to treat hashes like objects.  E.g,. instead of:
+
+<pre syntax="ruby">hash['foo']</pre>
+
+you can say:
+
+<pre syntax="ruby">hash.foo</pre>
+
+Instead of:
+
+<pre syntax="ruby">hash['foo'] = 'bar'</pre>
+
+you can say:
+
+<pre syntax="ruby">hash['foo'] = 'bar'</pre>
+
+The trunk repository is <code>svn://rubyforge.org/var/svn/hash_extension/trunk</code> for anonymous access.
+
+h2. From Rails
+
+First, add the following to the bottom of your environment.rb file:
+
+<pre syntax="ruby">require 'hash_extension'</pre>
+
+Anywhere you have syntax like this:
+
+<pre syntax="ruby">MyObject.find(:all)</pre>
+
+You can replace it with this:
+
+<pre syntax="ruby">MyObject.connection.select_all("select * from my_objects")</pre>
+
+The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correct with the hashes returned by connection.select.  If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., "find_as_hashes(:all)", I'd be thrilled to include it as part of this plug-in.
+
+h2. License
+
+This code is free to use under the terms of the MIT license. 
+
+h2. Contact
+
+Comments are welcome. Send an email to "Dan Chak":mailto:dan@chak.org.

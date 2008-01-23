@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: index.txt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>index.txt</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>website/index.txt
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Tue Jan 22 21:00:13 -0500 2008</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+h1. hash_extension
+</p>
+<p>
+h2. What
+</p>
+<p>
+hash_extension is a Ruby on Rails plug-in that makes hashes more
+object-like. When you request a lot of objects with an ActiveRecord query,
+there&#8216;s a lot of overhead in creating those objects that come back.
+If you&#8216;re not modifying, just displaying them or performing local
+calculations before display, you don&#8216;t need to suffer that overhead.
+It turns out it&#8216;s much faster to get back hash objects. This plug-in
+makes it a snap to replace a query that returns ActiveRecord objects with
+one that returns hashes.
+</p>
+<p>
+h2. Installing
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;sudo gem install
+hash_extension&lt;/pre&gt;
+</p>
+<p>
+h2. The basics
+</p>
+<p>
+The hash_extension plug-in allows you to treat hashes like objects. E.g,.
+instead of:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;hash[&#8216;foo&#8217;]&lt;/pre&gt;
+</p>
+<p>
+you can say:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;hash.foo&lt;/pre&gt;
+</p>
+<p>
+Instead of:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;hash[&#8216;foo&#8217;] =
+&#8216;bar&#8217;&lt;/pre&gt;
+</p>
+<p>
+you can say:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;hash[&#8216;foo&#8217;] =
+&#8216;bar&#8217;&lt;/pre&gt;
+</p>
+<p>
+The trunk repository is
+<tt>svn://rubyforge.org/var/svn/hash_extension/trunk</tt> for anonymous
+access.
+</p>
+<p>
+h2. From Rails
+</p>
+<p>
+First, add the following to the bottom of your environment.rb file:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;require
+&#8216;hash_extension&#8217;&lt;/pre&gt;
+</p>
+<p>
+Anywhere you have syntax like this:
+</p>
+<p>
+&lt;pre syntax=&quot;ruby&quot;&gt;MyObject.find(:all)&lt;/pre&gt;
+</p>
+<p>
+You can replace it with this:
+</p>
+<p>
+&lt;pre
+syntax=&quot;ruby&quot;&gt;MyObject.connection.select_all(&quot;select *
+from my_objects&quot;)&lt;/pre&gt;
+</p>
+<p>
+The same data is returned, but without the overhead of creating large,
+complex ActiveRecord objects. The rest of your code will continue to behave
+as expected, because the object-like access will now work correct with the
+hashes returned by connection.select. If someone would like to contribute
+extensions to ActiveRecord that would create finders that automatically
+return hashes, e.g., &quot;find_as_hashes(:all)&quot;, I&#8216;d be
+thrilled to include it as part of this plug-in.
+</p>
+<p>
+h2. License
+</p>
+<p>
+This code is free to use under the terms of the MIT license.
+</p>
+<p>
+h2. Contact
+</p>
+<p>
+Comments are welcome. Send an email to &quot;Dan Chak&quot;:<a
+href="mailto:dan@chak.org">dan@chak.org</a>.
+</p>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
