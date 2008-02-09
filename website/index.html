@@ -31,14 +31,14 @@
 <div id="main">
 
     <h1>hash_extension</h1>
-    <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/enterpriserails/"; return false'>
+    <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/enterpriserails"; return false'>
       <p>Get Version</p>
-      <a href="http://rubyforge.org/projects/enterpriserails/" class="numbers">0.0.1</a>
+      <a href="http://rubyforge.org/projects/enterpriserails" class="numbers">0.0.2</a>
     </div>
     <h2>What</h2>
 
 
-	<p>hash_extension is a Ruby on Rails plug-in that makes hashes more object-like.  When you request a lot of objects with an ActiveRecord query, there&#8217;s a lot of overhead in creating those objects that come back.  If you&#8217;re not modifying, just displaying them or performing local calculations before display, you don&#8217;t need to suffer that overhead.  It turns out it&#8217;s much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.</p>
+	<p>hash_extension is a Ruby on Rails plug-in that does two things.  First, it provides ActiveRecord finder methods that return hashes.  Second, it makes hashes more object-like.  Why?  When you request a lot of objects with an ActiveRecord query, there&#8217;s a lot of overhead in creating the objects that come back.  If you&#8217;re not modifying the records, but just displaying them or performing local calculations before display, you don&#8217;t need to suffer the overhead of creating heavy ActiveRecord objects.  It turns out it&#8217;s much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.</p>
 
 
 	<h2>Installing</h2>
@@ -50,7 +50,7 @@
 	<h2>The basics</h2>
 
 
-	<p>The hash_extension plug-in allows you to treat hashes like objects.  E.g,. instead of:</p>
+	<p>The hash_extension plug-in allows you to treat hashes like objects, and to get back hashes from (almost) standard ActiveRecord queries.  E.g,. instead of:</p>
 
 
 	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">['</span><span class="string">foo</span><span class="punct">']</span></pre></p>
@@ -71,7 +71,18 @@
 	<p>you can say:</p>
 
 
-	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">['</span><span class="string">foo</span><span class="punct">']</span> <span class="punct">=</span> <span class="punct">'</span><span class="string">bar</span><span class="punct">'</span></pre></p>
+	<p><pre class='syntax'><span class="ident">hash</span><span class="punct">.</span><span class="ident">foo</span> <span class="punct">=</span> <span class="punct">'</span><span class="string">bar</span><span class="punct">'</span></pre></p>
+
+
+	<p>Two variants of basic ActiveRecord query types are supported&#8212;find and find_by_sql, inventively recast as find_as_hashes and find_by_sql_as_hashes.  E.g.,</p>
+
+
+	<p><pre class='syntax'>
+<span class="constant">Foo</span><span class="punct">.</span><span class="ident">find_as_hashes</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">)</span>
+<span class="constant">Foo</span><span class="punct">.</span><span class="ident">find_as_hashes</span><span class="punct">(</span><span class="symbol">:first</span><span class="punct">)</span>
+<span class="constant">Foo</span><span class="punct">.</span><span class="ident">find_as_hashes</span><span class="punct">(</span><span class="symbol">:all</span><span class="punct">,</span> <span class="symbol">:conditions</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">bar = 'baz'</span><span class="punct">&quot;)</span>
+<span class="constant">Foo</span><span class="punct">.</span><span class="ident">find_by_sql_as_hashes</span><span class="punct">(&quot;</span><span class="string">select * where fubar = 'some_complex_stuff'</span><span class="punct">&quot;)</span>
+</pre></p>
 
 
 	<p>The trunk repository is <code>svn://rubyforge.org/var/svn/hash_extension/trunk</code> for anonymous access.</p>
@@ -95,10 +106,10 @@
 	<p>You can replace it with this:</p>
 
 
-	<p><pre class='syntax'><span class="constant">MyObject</span><span class="punct">.</span><span class="ident">connection</span><span class="punct">.</span><span class="ident">select_all</span><span class="punct">(&quot;</span><span class="string">select * from my_objects</span><span class="punct">&quot;)</span></pre></p>
+	<p><pre class='syntax'><span class="constant">MyObject</span><span class="punct">.</span><span class="ident">find_as_hashes</span><span class="punct">(&quot;</span><span class="string">select * from my_objects</span><span class="punct">&quot;)</span></pre></p>
 
 
-	<p>The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correct with the hashes returned by connection.select.  If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., &#8220;find_as_hashes(:all)&#8221;, I&#8217;d be thrilled to include it as part of this plug-in.</p>
+	<p>The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correctly with the hashes returned by these methods.</p>
 
 
 	<h2>License</h2>
@@ -107,12 +118,21 @@
 	<p>This code is free to use under the terms of the <span class="caps">MIT</span> license.</p>
 
 
+	<h2>Credits.</h2>
+
+
+	<p>The initial release only provided the extension to hash that made them act more like objects.  I posed the challenge: &#8220;If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., &#8220;find_as_hashes(:all)&#8221;, I&#8217;d be thrilled to include it as part of this plug-in.&#8221;  Elliot Laster rose to the challenge and provided the ActiveRecord extension available in the 0.0.2 release.</p>
+
+
+	<p>The new call to action is to provide some unit tests!  Ideally, they should use migrations to set up dummy tables, test against them, then tear down those tables.  Anyone up for it?  :-)</p>
+
+
 	<h2>Contact</h2>
 
 
 	<p>Comments are welcome. Send an email to <a href="mailto:dan@chak.org">Dan Chak</a>.</p>
     <p class="coda">
-      <a href="FIXME email">FIXME full name</a>, 22nd January 2008<br>
+      <a href="FIXME email">FIXME full name</a>, 9th February 2008<br>
       Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>
     </p>
 </div>

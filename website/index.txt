@@ -2,7 +2,7 @@ h1. hash_extension
 
 h2. What
 
-hash_extension is a Ruby on Rails plug-in that makes hashes more object-like.  When you request a lot of objects with an ActiveRecord query, there's a lot of overhead in creating those objects that come back.  If you're not modifying, just displaying them or performing local calculations before display, you don't need to suffer that overhead.  It turns out it's much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.
+hash_extension is a Ruby on Rails plug-in that does two things.  First, it provides ActiveRecord finder methods that return hashes.  Second, it makes hashes more object-like.  Why?  When you request a lot of objects with an ActiveRecord query, there's a lot of overhead in creating the objects that come back.  If you're not modifying the records, but just displaying them or performing local calculations before display, you don't need to suffer the overhead of creating heavy ActiveRecord objects.  It turns out it's much faster to get back hash objects.  This plug-in makes it a snap to replace a query that returns ActiveRecord objects with one that returns hashes.
 
 h2. Installing
 
@@ -10,7 +10,7 @@ h2. Installing
 
 h2. The basics
 
-The hash_extension plug-in allows you to treat hashes like objects.  E.g,. instead of:
+The hash_extension plug-in allows you to treat hashes like objects, and to get back hashes from (almost) standard ActiveRecord queries.  E.g,. instead of:
 
 <pre syntax="ruby">hash['foo']</pre>
 
@@ -24,7 +24,17 @@ Instead of:
 
 you can say:
 
-<pre syntax="ruby">hash['foo'] = 'bar'</pre>
+<pre syntax="ruby">hash.foo = 'bar'</pre>
+
+Two variants of basic ActiveRecord query types are supported -- find and find_by_sql, inventively recast as find_as_hashes and find_by_sql_as_hashes.  E.g.,
+
+<pre syntax="ruby">
+Foo.find_as_hashes(:all)
+Foo.find_as_hashes(:first)
+Foo.find_as_hashes(:all, :conditions => "bar = 'baz'")
+Foo.find_by_sql_as_hashes("select * where fubar = 'some_complex_stuff'")
+</pre>
+
 
 The trunk repository is <code>svn://rubyforge.org/var/svn/hash_extension/trunk</code> for anonymous access.
 
@@ -40,13 +50,19 @@ Anywhere you have syntax like this:
 
 You can replace it with this:
 
-<pre syntax="ruby">MyObject.connection.select_all("select * from my_objects")</pre>
+<pre syntax="ruby">MyObject.find_as_hashes("select * from my_objects")</pre>
 
-The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correct with the hashes returned by connection.select.  If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., "find_as_hashes(:all)", I'd be thrilled to include it as part of this plug-in.
+The same data is returned, but without the overhead of creating large, complex ActiveRecord objects.  The rest of your code will continue to behave as expected, because the object-like access will now work correctly with the hashes returned by these methods.
 
 h2. License
 
 This code is free to use under the terms of the MIT license. 
+
+h2. Credits.
+
+The initial release only provided the extension to hash that made them act more like objects.  I posed the challenge: "If someone would like to contribute extensions to ActiveRecord that would create finders that automatically return hashes, e.g., "find_as_hashes(:all)", I'd be thrilled to include it as part of this plug-in."  Elliot Laster rose to the challenge and provided the ActiveRecord extension available in the 0.0.2 release.
+
+The new call to action is to provide some unit tests!  Ideally, they should use migrations to set up dummy tables, test against them, then tear down those tables.  Anyone up for it?  :-)
 
 h2. Contact
 
