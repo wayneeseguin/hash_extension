@@ -18,7 +18,7 @@ module ActiveRecord
       end
 
       def find_as_hashes(*args)
-        options = extract_options_from_args!(args)
+        options = args.extract_options!
         if options.include?(:include)
           raise ActiveRecord::StatementInvalid, "find_as_hashes cannot accept :include options!"
         end
